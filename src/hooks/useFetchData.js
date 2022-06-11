@@ -1,5 +1,6 @@
 import axios from 'axios';
 import { useEffect, useState } from 'react';
+import { API_URL } from '../config';
 
 export const useFetchData = (startPost, endPost) => {
   const [isPending, setIsPending] = useState(false);
@@ -21,34 +22,46 @@ export const useFetchData = (startPost, endPost) => {
     return transformedPost;
   };
 
+  const getPostIds = async () => {
+    const { data } = await axios.get(
+      `${API_URL}v0/beststories.json?print=pretty`
+    );
+    return data;
+  };
+
+  const getPostDataById = async postId => {
+    const { data } = await axios.get(`${API_URL}v0/item/${postId}.json`);
+    return data;
+  };
+
   useEffect(() => {
     const getData = async (startPost, endPost) => {
       setIsPending(true);
+
       try {
-        const res = await axios.get(
-          'https://hacker-news.firebaseio.com/v0/beststories.json?print=pretty'
-        );
-        console.log({ res });
-        // todo: !res throw
-        setTotalPostsNumber(res.data.length);
-        const slicedPosts = res.data.slice(startPost, endPost);
+        const postIds = await getPostIds();
+
+        if (!postIds) throw new Error('Problem with fetching posts.');
+
+        setTotalPostsNumber(postIds.length);
+
+        const slicedPosts = postIds.slice(startPost, endPost);
+
         let postsArray = [];
 
         const results = await Promise.all(
-          slicedPosts.map(async post => {
-            const { data } = await axios.get(
-              `https://hacker-news.firebaseio.com/v0/item/${post}.json`
-            );
-
-            return data;
+          slicedPosts.map(async postId => {
+            const post = await getPostDataById(postId);
+            if (!post) throw new Error('Problem with fetching post.');
+            return post;
           })
         );
 
         let num = startPost + 1;
+
         results.forEach(post => {
           const transformedPost = transformPostsData({ ...post, num });
           num++;
-          console.log({ transformedPost });
 
           postsArray.push(transformedPost);
         });

@@ -1,14 +1,13 @@
-import { useFetchData } from "../hooks/useFetchData";
-import NewsPost from "./NewsPost";
-import Spinner from "./Spinner";
-import Button from "./Button";
+import { useFetchData } from '../hooks/useFetchData';
+import NewsPost from './NewsPost';
+import Spinner from './Spinner';
+import Button from './Button';
 
-import { useEffect, useState } from "react";
-import Header from "./Header";
+import { useEffect, useState } from 'react';
+import Header from './Header';
+import { POSTS_PER_PAGE } from '../config';
 
 export default function NewsPosts() {
-  const numberOfPosts = 20;
-
   const [page, setPage] = useState(1);
   const [fromPost, setFromPost] = useState(null);
   const [toPost, setToPost] = useState(null);
@@ -18,11 +17,11 @@ export default function NewsPosts() {
   );
 
   const disablePrev = page <= 1;
-  const disableNext = page * numberOfPosts >= totalPostsNumber;
+  const disableNext = page * POSTS_PER_PAGE >= totalPostsNumber;
 
   useEffect(() => {
-    setFromPost((page - 1) * numberOfPosts);
-    setToPost(page * numberOfPosts);
+    setFromPost((page - 1) * POSTS_PER_PAGE);
+    setToPost(page * POSTS_PER_PAGE);
   }, [page]);
 
   const handlePrevious = () => {
@@ -36,10 +35,10 @@ export default function NewsPosts() {
   };
 
   return (
-    <div style={{ minHeight: "100vh" }}>
+    <div style={{ minHeight: '100vh' }}>
       <Header />
       <p>{error}</p>
-      <div style={{ minHeight: "80vh" }}>
+      <div style={{ minHeight: '80vh' }}>
         {isPending ? (
           <Spinner />
         ) : (
