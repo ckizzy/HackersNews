@@ -1,5 +1,5 @@
-import axios from "axios";
-import { useEffect, useState } from "react";
+import axios from 'axios';
+import { useEffect, useState } from 'react';
 
 export const useFetchData = (startPost, endPost) => {
   const [isPending, setIsPending] = useState(false);
@@ -9,9 +9,10 @@ export const useFetchData = (startPost, endPost) => {
 
   const transformPostsData = post => {
     const transformedPost = {
+      num: post.num,
       id: post.id,
       title: post.title,
-      by: post.by,
+      author: post.by,
       score: post.score,
       time: post.time,
       url: post.url
@@ -25,7 +26,7 @@ export const useFetchData = (startPost, endPost) => {
       setIsPending(true);
       try {
         const res = await axios.get(
-          "https://hacker-news.firebaseio.com/v0/beststories.json?print=pretty"
+          'https://hacker-news.firebaseio.com/v0/beststories.json?print=pretty'
         );
         console.log({ res });
         // todo: !res throw
@@ -43,8 +44,10 @@ export const useFetchData = (startPost, endPost) => {
           })
         );
 
+        let num = startPost + 1;
         results.forEach(post => {
-          const transformedPost = transformPostsData(post);
+          const transformedPost = transformPostsData({ ...post, num });
+          num++;
           console.log({ transformedPost });
 
           postsArray.push(transformedPost);
@@ -54,7 +57,7 @@ export const useFetchData = (startPost, endPost) => {
         setError(null);
         setIsPending(false);
       } catch (err) {
-        setError(err.message || "Something went wrong.");
+        setError(err.message || 'Something went wrong.');
         setIsPending(false);
       }
     };

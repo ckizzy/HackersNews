@@ -36,17 +36,29 @@ export default function NewsPosts() {
   };
 
   return (
-    <div>
+    <div style={{ minHeight: "100vh" }}>
       <Header />
       <p>{error}</p>
-      {isPending ? (
-        <Spinner />
-      ) : (
-        <div>
-          {!!posts?.length &&
-            posts.map(post => <NewsPost key={post.id} title={post.title} />)}
-        </div>
-      )}
+      <div style={{ minHeight: "80vh" }}>
+        {isPending ? (
+          <Spinner />
+        ) : (
+          <div>
+            {!!posts?.length &&
+              posts.map(post => (
+                <NewsPost
+                  url={post.url}
+                  key={post.id}
+                  num={post.num}
+                  title={post.title}
+                  author={post.author}
+                  time={post.time}
+                  score={post.score}
+                />
+              ))}
+          </div>
+        )}
+      </div>
       <div>
         <Button
           type="button"
