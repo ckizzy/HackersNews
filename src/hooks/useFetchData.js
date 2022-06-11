@@ -5,6 +5,7 @@ export const useFetchData = (startPost, endPost) => {
   const [isPending, setIsPending] = useState(false);
   const [error, setError] = useState(null);
   const [posts, setPosts] = useState(null);
+  const [totalPostsNumber, setTotalPostsNumber] = useState(null);
 
   const transformPostsData = post => {
     const transformedPost = {
@@ -27,6 +28,8 @@ export const useFetchData = (startPost, endPost) => {
           "https://hacker-news.firebaseio.com/v0/beststories.json?print=pretty"
         );
         console.log({ res });
+        // todo: !res throw
+        setTotalPostsNumber(res.data.length);
         const slicedPosts = res.data.slice(startPost, endPost);
         let postsArray = [];
 
@@ -35,6 +38,7 @@ export const useFetchData = (startPost, endPost) => {
             const { data } = await axios.get(
               `https://hacker-news.firebaseio.com/v0/item/${post}.json`
             );
+
             return data;
           })
         );
@@ -59,6 +63,7 @@ export const useFetchData = (startPost, endPost) => {
   }, [startPost, endPost]);
 
   return {
+    totalPostsNumber,
     posts,
     isPending,
     error
