@@ -11,10 +11,9 @@ export default function NewsPosts() {
   const [page, setPage] = useState(1);
   const [fromPost, setFromPost] = useState(null);
   const [toPost, setToPost] = useState(null);
-  const { isPending, error, posts, totalPostsNumber } = useFetchData(
-    fromPost,
-    toPost
-  );
+
+  const { isPending, error, posts, totalPostsNumber, refreshData } =
+    useFetchData(fromPost, toPost);
 
   const disablePrev = page <= 1;
   const disableNext = page * POSTS_PER_PAGE >= totalPostsNumber;
@@ -34,9 +33,12 @@ export default function NewsPosts() {
     setPage(page + 1);
   };
 
+  const handleRefresh = () => {
+    refreshData();
+  };
   return (
     <div style={{ minHeight: '100vh' }}>
-      <Header />
+      <Header handleRefresh={handleRefresh} />
       <p>{error}</p>
       <div style={{ minHeight: '80vh' }}>
         {isPending ? (

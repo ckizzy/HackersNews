@@ -1,3 +1,7 @@
-export default function Header() {
-  return <div>Header</div>;
+export default function Header({ handleRefresh }) {
+  return (
+    <div>
+      <button onClick={handleRefresh}>Refresh</button>
+    </div>
+  );
 }

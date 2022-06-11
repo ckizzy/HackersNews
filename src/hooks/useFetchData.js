@@ -7,6 +7,7 @@ export const useFetchData = (startPost, endPost) => {
   const [error, setError] = useState(null);
   const [posts, setPosts] = useState(null);
   const [totalPostsNumber, setTotalPostsNumber] = useState(null);
+  const [refresh, setRefresh] = useState(false);
 
   const transformPostsData = post => {
     const transformedPost = {
@@ -33,6 +34,8 @@ export const useFetchData = (startPost, endPost) => {
     const { data } = await axios.get(`${API_URL}v0/item/${postId}.json`);
     return data;
   };
+
+  const refreshData = () => setRefresh(!refresh);
 
   useEffect(() => {
     const getData = async (startPost, endPost) => {
@@ -74,14 +77,14 @@ export const useFetchData = (startPost, endPost) => {
         setIsPending(false);
       }
     };
-
     getData(startPost, endPost);
-  }, [startPost, endPost]);
+  }, [startPost, endPost, refresh]);
 
   return {
     totalPostsNumber,
     posts,
     isPending,
-    error
+    error,
+    refreshData
   };
 };
