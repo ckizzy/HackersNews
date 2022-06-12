@@ -8,6 +8,7 @@ import { POSTS_PER_PAGE, START_POST } from '../config';
 import { Container, MainContainer } from './styles/Container.styles';
 import { Wrapper } from './styles/Wrapper.styles';
 import Pagination from './Pagination';
+import toast from 'react-hot-toast';
 
 export default function NewsPosts() {
   const [page, setPage] = useState(1);
@@ -19,6 +20,10 @@ export default function NewsPosts() {
 
   const disablePrev = page <= 1;
   const disableNext = page * POSTS_PER_PAGE >= totalPostsNumber;
+
+  useEffect(() => {
+    if (error) toast.error(error);
+  }, [error]);
 
   useEffect(() => {
     setFromPost((page - 1) * POSTS_PER_PAGE);
@@ -43,35 +48,33 @@ export default function NewsPosts() {
   return (
     <Wrapper>
       <Header handleRefresh={handleRefresh} isPending={isPending} />
-      <Container>
-        <p>{error}</p>
-        <MainContainer>
-          {isPending ? (
-            <Spinner />
-          ) : (
-            <>
-              {!!posts?.length &&
-                posts.map(post => (
-                  <NewsPost
-                    url={post.url}
-                    key={post.id}
-                    num={post.num}
-                    title={post.title}
-                    author={post.author}
-                    time={post.time}
-                    score={post.score}
-                  />
-                ))}
-            </>
-          )}
-        </MainContainer>
-        <Pagination
-          handleNext={handleNext}
-          handlePrev={handlePrev}
-          disablePrev={disablePrev}
-          disableNext={disableNext}
-        />
-      </Container>
+      <MainContainer>
+        {isPending ? (
+          <Spinner />
+        ) : (
+          !!posts?.length && (
+            <Container>
+              {posts.map(post => (
+                <NewsPost
+                  url={post.url}
+                  key={post.id}
+                  num={post.num}
+                  title={post.title}
+                  author={post.author}
+                  time={post.time}
+                  score={post.score}
+                />
+              ))}
+              <Pagination
+                handleNext={handleNext}
+                handlePrev={handlePrev}
+                disablePrev={disablePrev}
+                disableNext={disableNext}
+              />
+            </Container>
+          )
+        )}
+      </MainContainer>
     </Wrapper>
   );
 }

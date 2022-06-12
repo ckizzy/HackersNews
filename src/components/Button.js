@@ -10,7 +10,8 @@ Button.propTypes = {
   type: PropTypes.string,
   label: PropTypes.string.isRequired,
   className: PropTypes.string,
-  onClick: PropTypes.func
+  onClick: PropTypes.func,
+  bg: PropTypes.string
 };
 
 Button.defaultProps = {

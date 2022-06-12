@@ -1,34 +1,31 @@
 import styled from 'styled-components';
 
 export const Container = styled.div`
+  width: 100%;
+  padding: 40px 20px;
+`;
+
+export const FlexContainer = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+`;
+
+export const ButtonContainer = styled(FlexContainer)`
+  margin-top: 30px;
+`;
+
+export const MainContainer = styled(FlexContainer)`
+  margin: 0px auto;
   width: 900px;
   max-width: 100%;
   min-height: 100vh;
-  margin: 0px auto;
-  padding: 20px;
+  flex-direction: column;
 `;
-
-export const HeaderContainer = styled.div`
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
+export const HeaderContainer = styled(FlexContainer)`
   width: 900px;
   max-width: 100%;
   margin: 0 auto;
+  justify-content: space-between;
   padding: 0px 20px;
-`;
-
-export const ButtonContainer = styled.div`
-  display: flex;
-  justify-content: center;
-  margin-top: 20px;
-`;
-
-export const MainContainer = styled.div`
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  flex-direction: column;
-  min-height: 100vh;
-  width: 100%;
 `;

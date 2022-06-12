@@ -23,6 +23,7 @@ export const useFetchData = (startPost, endPost) => {
   };
 
   const getPostIds = async () => {
+    //fetch
     const { data } = await axios.get(`${API_URL}v0/beststories.json`);
     return data;
   };
@@ -41,7 +42,7 @@ export const useFetchData = (startPost, endPost) => {
       try {
         if (postIds.length === 0) {
           const ids = await getPostIds();
-          if (!ids) throw new Error('Problem with fetching posts.');
+          if (!ids) throw new Error();
           setPostIds(ids);
         }
 
@@ -52,7 +53,7 @@ export const useFetchData = (startPost, endPost) => {
         const results = await Promise.all(
           slicedPosts.map(async postId => {
             const post = await getPostDataById(postId);
-            if (!post) throw new Error('Problem with fetching post.');
+            if (!post) throw new Error();
             return post;
           })
         );
@@ -70,7 +71,7 @@ export const useFetchData = (startPost, endPost) => {
         setError(null);
         setIsPending(false);
       } catch (err) {
-        setError(err.message || 'Something went wrong.');
+        setError('Problem with fetching data.');
         setIsPending(false);
       }
     };

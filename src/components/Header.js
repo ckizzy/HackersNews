@@ -2,6 +2,7 @@ import { StyledHeader } from '../components/styles/Header.styles';
 import { HeaderContainer } from './styles/Container.styles';
 import { ButtonRefresh } from './styles/Button.styles';
 import Refresh from '../assets/icons/refresh.png';
+import PropTypes from 'prop-types';
 
 export default function Header({ handleRefresh, isPending }) {
   return (
@@ -15,3 +16,12 @@ export default function Header({ handleRefresh, isPending }) {
     </StyledHeader>
   );
 }
+
+Header.propTypes = {
+  handleRefresh: PropTypes.func.isRequired,
+  isPending: PropTypes.bool
+};
+
+Header.defaultProps = {
+  isPending: false
+};
