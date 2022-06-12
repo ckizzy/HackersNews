@@ -1,0 +1,16 @@
+{
+  "files": {
+    "main.css": "/hackers-news/static/css/main.4e3a7583.css",
+    "main.js": "/hackers-news/static/js/main.e6084722.js",
+    "static/js/787.7866591d.chunk.js": "/hackers-news/static/js/787.7866591d.chunk.js",
+    "static/media/refresh.png": "/hackers-news/static/media/refresh.0af003c806d2f5052673.png",
+    "index.html": "/hackers-news/index.html",
+    "main.4e3a7583.css.map": "/hackers-news/static/css/main.4e3a7583.css.map",
+    "main.e6084722.js.map": "/hackers-news/static/js/main.e6084722.js.map",
+    "787.7866591d.chunk.js.map": "/hackers-news/static/js/787.7866591d.chunk.js.map"
+  },
+  "entrypoints": [
+    "static/css/main.4e3a7583.css",
+    "static/js/main.e6084722.js"
+  ]
+}
