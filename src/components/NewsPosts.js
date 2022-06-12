@@ -1,17 +1,13 @@
 import { useFetchData } from '../hooks/useFetchData';
 import NewsPost from './NewsPost';
 import Spinner from './Spinner';
-import Button from './Button';
 
 import { useEffect, useState } from 'react';
 import Header from './Header';
 import { POSTS_PER_PAGE, START_POST } from '../config';
-import {
-  ButtonContainer,
-  Container,
-  MainContainer
-} from './styles/Container.styles';
+import { Container, MainContainer } from './styles/Container.styles';
 import { Wrapper } from './styles/Wrapper.styles';
+import Pagination from './Pagination';
 
 export default function NewsPosts() {
   const [page, setPage] = useState(1);
@@ -29,7 +25,7 @@ export default function NewsPosts() {
     setToPost(page * POSTS_PER_PAGE);
   }, [page]);
 
-  const handlePrevious = () => {
+  const handlePrev = () => {
     if (disablePrev) return;
     setPage(page - 1);
     window.scrollTo(0, 0);
@@ -46,7 +42,7 @@ export default function NewsPosts() {
   };
   return (
     <Wrapper>
-      <Header handleRefresh={handleRefresh} />
+      <Header handleRefresh={handleRefresh} isPending={isPending} />
       <Container>
         <p>{error}</p>
         <MainContainer>
@@ -69,22 +65,12 @@ export default function NewsPosts() {
             </>
           )}
         </MainContainer>
-        <ButtonContainer>
-          <Button
-            bg={disablePrev && 'none'}
-            type="button"
-            label="<  Prev"
-            onClick={handlePrevious}
-            disabled={disablePrev}
-          />
-          <Button
-            bg={disableNext && 'none'}
-            type="button"
-            label="Next  >"
-            onClick={handleNext}
-            disabled={disableNext}
-          />
-        </ButtonContainer>
+        <Pagination
+          handleNext={handleNext}
+          handlePrev={handlePrev}
+          disablePrev={disablePrev}
+          disableNext={disableNext}
+        />
       </Container>
     </Wrapper>
   );

@@ -14,7 +14,7 @@ export const StyledButton = styled.input`
   letter-spacing: 0em;
   margin: 0px 10px;
   border: none;
-  cursor: ${props => (props.bg !== 'none' ? 'cursor' : ' not-allowed')};
+  cursor: ${props => (props.bg !== 'none' ? 'pointer' : 'not-allowed')};
 
   color: ${props => props.inputColor || '#a8a8a8'};
   outline: none;

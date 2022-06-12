@@ -23,9 +23,7 @@ export const useFetchData = (startPost, endPost) => {
   };
 
   const getPostIds = async () => {
-    const { data } = await axios.get(
-      `${API_URL}v0/beststories.json?print=pretty`
-    );
+    const { data } = await axios.get(`${API_URL}v0/beststories.json`);
     return data;
   };
 
