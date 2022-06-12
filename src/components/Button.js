@@ -1,7 +1,8 @@
-import PropTypes from "prop-types";
+import PropTypes from 'prop-types';
+import { StyledButton } from './styles/Button.styles';
 
 export default function Button(props) {
-  return <input {...props} value={props.label} />;
+  return <StyledButton {...props} value={props.label} bg={props.bg} />;
 }
 
 Button.propTypes = {
@@ -13,5 +14,5 @@ Button.propTypes = {
 };
 
 Button.defaultProps = {
-  type: "submit"
+  type: 'submit'
 };

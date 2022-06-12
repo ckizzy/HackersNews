@@ -1,5 +1,5 @@
 import PropTypes from 'prop-types';
-
+import { StyledPost } from '../components/styles/NewsPost.styles';
 export default function NewsPost({ title, url, score, time, author, num }) {
   const calculateTime = timestamp => {
     const today = new Date();
@@ -23,7 +23,7 @@ export default function NewsPost({ title, url, score, time, author, num }) {
     return trimedUrl;
   };
   return (
-    <div>
+    <StyledPost>
       <h2>
         {num}. {title}
       </h2>
@@ -34,9 +34,12 @@ export default function NewsPost({ title, url, score, time, author, num }) {
       </span>
       <div>
         <strong>{score} points</strong> by
-        <strong> {author} </strong> {Math.round(calculateTime(time))} days ago
+        <strong> {author} </strong>
+        {Math.round(calculateTime(time)) === 0
+          ? 'today'
+          : `${Math.round(calculateTime(time))} days ago`}
       </div>
-    </div>
+    </StyledPost>
   );
 }
 

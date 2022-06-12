@@ -1,12 +1,7 @@
-import "./App.css";
-import NewsPosts from "./components/NewsPosts";
+import NewsPosts from './components/NewsPosts';
 
 function App() {
-  return (
-    <div className="container">
-      <NewsPosts />
-    </div>
-  );
+  return <NewsPosts />;
 }
 
 export default App;

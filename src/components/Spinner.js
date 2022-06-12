@@ -1,3 +1,15 @@
+import { StyledSpinner } from './styles/Spinner.styles';
 export default function Spinner() {
-  return <div>Spinner</div>;
+  return (
+    <StyledSpinner className="lds-roller">
+      <div></div>
+      <div></div>
+      <div></div>
+      <div></div>
+      <div></div>
+      <div></div>
+      <div></div>
+      <div></div>
+    </StyledSpinner>
+  );
 }
