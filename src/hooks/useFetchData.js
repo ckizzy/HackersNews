@@ -6,8 +6,7 @@ export const useFetchData = (startPost, endPost) => {
   const [isPending, setIsPending] = useState(false);
   const [error, setError] = useState(null);
   const [posts, setPosts] = useState(null);
-  const [totalPostsNumber, setTotalPostsNumber] = useState(null);
-  const [refresh, setRefresh] = useState(false);
+  const [postIds, setPostIds] = useState([]);
 
   const transformPostsData = post => {
     const transformedPost = {
@@ -35,22 +34,22 @@ export const useFetchData = (startPost, endPost) => {
     return data;
   };
 
-  const refreshData = () => setRefresh(!refresh);
+  const refreshData = () => setPostIds([]);
 
   useEffect(() => {
     const getData = async (startPost, endPost) => {
       setIsPending(true);
 
       try {
-        const postIds = await getPostIds();
-
-        if (!postIds) throw new Error('Problem with fetching posts.');
-
-        setTotalPostsNumber(postIds.length);
+        if (postIds.length === 0) {
+          const ids = await getPostIds();
+          if (!ids) throw new Error('Problem with fetching posts.');
+          setPostIds(ids);
+        }
 
         const slicedPosts = postIds.slice(startPost, endPost);
 
-        let postsArray = [];
+        const postsArray = [];
 
         const results = await Promise.all(
           slicedPosts.map(async postId => {
@@ -78,10 +77,10 @@ export const useFetchData = (startPost, endPost) => {
       }
     };
     getData(startPost, endPost);
-  }, [startPost, endPost, refresh]);
+  }, [startPost, endPost, postIds]);
 
   return {
-    totalPostsNumber,
+    totalPostsNumber: postIds.length,
     posts,
     isPending,
     error,
