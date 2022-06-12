@@ -21,10 +21,12 @@ export default function NewsPosts() {
   const disablePrev = page <= 1;
   const disableNext = page * POSTS_PER_PAGE >= totalPostsNumber;
 
+  // show toast with error
   useEffect(() => {
     if (error) toast.error(error);
   }, [error]);
 
+  // change to and from if page changed
   useEffect(() => {
     setFromPost((page - 1) * POSTS_PER_PAGE);
     setToPost(page * POSTS_PER_PAGE);
@@ -45,6 +47,7 @@ export default function NewsPosts() {
   const handleRefresh = () => {
     refreshData();
   };
+
   return (
     <Wrapper>
       <Header handleRefresh={handleRefresh} isPending={isPending} />

@@ -7,7 +7,10 @@ export const useFetchData = (startPost, endPost) => {
   const [error, setError] = useState(null);
   const [posts, setPosts] = useState(null);
   const [postIds, setPostIds] = useState([]);
+  // if component is unomount before fetch data is done
+  const [isCancelled, setIsCancelled] = useState(false);
 
+  // helper: transform api data to post
   const transformPostsData = post => {
     const transformedPost = {
       num: post.num,
@@ -22,34 +25,46 @@ export const useFetchData = (startPost, endPost) => {
     return transformedPost;
   };
 
+  // helper: get post ids from api
   const getPostIds = async () => {
-    //fetch
     const { data } = await axios.get(`${API_URL}v0/beststories.json`);
     return data;
   };
 
+  // helper: get post data by id from api
   const getPostDataById = async postId => {
     const { data } = await axios.get(`${API_URL}v0/item/${postId}.json`);
     return data;
   };
 
+  // trigger fetch data
   const refreshData = () => setPostIds([]);
 
   useEffect(() => {
+    // for dev mode -> because of react strict mode
+    setIsCancelled(false);
+
     const getData = async (startPost, endPost) => {
+      // start loading
       setIsPending(true);
 
       try {
+        // fetch post ids only if needed
         if (postIds.length === 0) {
           const ids = await getPostIds();
           if (!ids) throw new Error();
-          setPostIds(ids);
+          // set state only if not cancelled (unmount)
+          if (!isCancelled) {
+            setPostIds(ids);
+          }
         }
 
+        // use only posts needed for one page
         const slicedPosts = postIds.slice(startPost, endPost);
 
         const postsArray = [];
 
+        // get posts data by id
         const results = await Promise.all(
           slicedPosts.map(async postId => {
             const post = await getPostDataById(postId);
@@ -58,8 +73,10 @@ export const useFetchData = (startPost, endPost) => {
           })
         );
 
+        // set num for order
         let num = startPost + 1;
 
+        // set order in posts array as on api
         results.forEach(post => {
           const transformedPost = transformPostsData({ ...post, num });
           num++;
@@ -67,16 +84,25 @@ export const useFetchData = (startPost, endPost) => {
           postsArray.push(transformedPost);
         });
 
-        setPosts(postsArray);
-        setError(null);
-        setIsPending(false);
+        // set state if not cancelled (unmount)
+        if (!isCancelled) {
+          setPosts(postsArray);
+          setError(null);
+          setIsPending(false);
+        }
       } catch (err) {
-        setError('Problem with fetching data.');
-        setIsPending(false);
+        // set state if not cancelled (unmount)
+        if (!isCancelled) {
+          setError('Problem with fetching data.');
+          setIsPending(false);
+        }
       }
     };
     getData(startPost, endPost);
-  }, [startPost, endPost, postIds]);
+
+    // cancel on unmount
+    return () => setIsCancelled(true);
+  }, [startPost, endPost, postIds, isCancelled]);
 
   return {
     totalPostsNumber: postIds.length,
